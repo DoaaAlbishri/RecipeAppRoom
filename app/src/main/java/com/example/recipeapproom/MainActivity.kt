@@ -28,22 +28,31 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         savebtn.setOnClickListener {
-            var Recipe = RecipeDetails(
-                    0,
-                    title.text.toString(),
-                    name.text.toString(),
-                    Ingredents.text.toString(),
-                    Instruction.text.toString()
-            )
-            CoroutineScope(Dispatchers.IO).launch {
-                RecipeDatabase.getInstance(applicationContext).RecipeDao().insertRecipe(Recipe)
+            if (title.text.isEmpty() ||
+                    name.text.isEmpty() ||
+                    Ingredents.text.isEmpty() ||
+                    Instruction.text.isEmpty()) {
+                Toast.makeText(applicationContext, "Fill all field please!! ", Toast.LENGTH_LONG).show()
+                println("Fill all field please!! ")
             }
-            Toast.makeText(applicationContext, "data saved successfully! ", Toast.LENGTH_SHORT)
-                    .show()
+            else {
+                var Recipe = RecipeDetails(
+                        0,
+                        title.text.toString(),
+                        name.text.toString(),
+                        Ingredents.text.toString(),
+                        Instruction.text.toString()
+                )
+                CoroutineScope(Dispatchers.IO).launch {
+                    RecipeDatabase.getInstance(applicationContext).RecipeDao().insertRecipe(Recipe)
+                }
+                Toast.makeText(applicationContext, "data saved successfully! ", Toast.LENGTH_SHORT)
+                        .show()
                 title.setText("")
                 name.setText("")
                 Ingredents.setText("")
                 Instruction.setText("")
+            }
         }
     }
 
